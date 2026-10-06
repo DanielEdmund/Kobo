@@ -3,25 +3,97 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Kobo color tokens (mirror of Tailwind palette for CSS usage) */
+  --kobo-teal: #0d9488;
+  --kobo-teal-dark: #115e59;
+  --kobo-coral: #ea580c;
+  --kobo-gold: #f59e0b;
+  --kobo-cream: #f8fafc;
+  --kobo-charcoal: #334155;
+  --kobo-ink: #0f172a;
+  --kobo-muted: #64748b;
+  --kobo-line: #e2e8f0;
+  --kobo-mint: #d1fae5;
+  --kobo-rose: #fda4af;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--kobo-cream);
+    color: var(--kobo-charcoal);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Clear focus states for keyboard users */
+  :focus-visible {
+    outline: 2px solid rgba(13, 148, 136, 0.6);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  ::selection {
+    background: rgba(13, 148, 136, 0.22);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* KoboCard — clean, neutral, lightly elevated */
+  .kobo-card {
+    @apply rounded-card border border-kobo-line bg-surface shadow-card;
+  }
+
+  .kobo-card-flat {
+    @apply rounded-card border border-kobo-line bg-surface/70;
+  }
+
+  /* Every tappable control gets a comfortable 56px target */
+  .kobo-tap {
+    @apply min-h-[56px] transition-transform duration-150 active:scale-[0.98];
+  }
+
+  .kobo-press {
+    @apply transition-transform duration-150 active:scale-[0.98];
+  }
+
+  .kobo-amount {
+    @apply font-bold tracking-tight text-kobo-ink tabular-nums;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Respect users who prefer reduced motion (accessibility) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
